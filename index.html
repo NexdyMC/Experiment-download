@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Download Excel from Textarea</title>
+  <title>Dynamic Table Size Excel</title>
 </head>
 <body>
-  <h1>Generate Excel File</h1>
+  <h1>Generate Excel File with Dynamic Table Size</h1>
 
   <!-- Input untuk nama file -->
   <label for="fileName">File Name:</label>
@@ -31,7 +31,7 @@ Bob,25,San Francisco"></textarea>
   <!-- Include SheetJS library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
-document.getElementById("downloadExcel").addEventListener("click", function () {
+    document.getElementById("downloadExcel").addEventListener("click", function () {
   // Ambil data dari input nama file
   const fileNameInput = document.getElementById("fileName").value.trim();
   const fileName = fileNameInput || "example"; // Default nama file jika kosong
@@ -55,6 +55,14 @@ document.getElementById("downloadExcel").addEventListener("click", function () {
   // Buat worksheet dari data
   const worksheet = XLSX.utils.aoa_to_sheet(rows);
 
+  // Atur lebar kolom secara dinamis
+  const columnWidths = rows[0].map((_, colIndex) => {
+    return {
+      wch: Math.max(...rows.map(row => (row[colIndex] ? row[colIndex].length : 0))) + 2 // Panjang maksimum + padding
+    };
+  });
+  worksheet["!cols"] = columnWidths;
+
   // Buat workbook dan tambahkan worksheet
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -63,9 +71,6 @@ document.getElementById("downloadExcel").addEventListener("click", function () {
   const finalFileName = `${fileName}${dateSuffix}.xlsx`;
   XLSX.writeFile(workbook, finalFileName);
 });
-    
-
-
     
   </script>
 </body>
