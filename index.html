@@ -6,22 +6,44 @@
   <title>Download Excel from Textarea</title>
 </head>
 <body>
-  <h1>Download Excel File</h1>
+  <h1>Generate Excel File</h1>
+
+  <!-- Input untuk nama file -->
+  <label for="fileName">File Name:</label>
+  <input type="text" id="fileName" placeholder="Enter file name (e.g., report)" />
+  <br><br>
+
+  <!-- Input untuk tanggal -->
+  <label for="fileDate">Date:</label>
+  <input type="date" id="fileDate" />
+  <br><br>
+
+  <!-- Textarea untuk data -->
   <textarea id="dataInput" rows="10" cols="50" placeholder="Enter data in CSV format, e.g.:
 Name,Age,City
 Alice,30,New York
 Bob,25,San Francisco"></textarea>
   <br><br>
+
+  <!-- Tombol untuk mengunduh Excel -->
   <button id="downloadExcel">Download Excel</button>
 
   <!-- Include SheetJS library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
 document.getElementById("downloadExcel").addEventListener("click", function () {
+  // Ambil data dari input nama file
+  const fileNameInput = document.getElementById("fileName").value.trim();
+  const fileName = fileNameInput || "example"; // Default nama file jika kosong
+
+  // Ambil data tanggal
+  const fileDate = document.getElementById("fileDate").value;
+  const dateSuffix = fileDate ? `_${fileDate}` : ""; // Tambahkan tanggal jika tersedia
+
   // Ambil data dari textarea
   const inputData = document.getElementById("dataInput").value;
 
-  // Validasi input kosong
+  // Validasi input
   if (!inputData.trim()) {
     alert("Please enter some data in the textarea.");
     return;
@@ -38,9 +60,12 @@ document.getElementById("downloadExcel").addEventListener("click", function () {
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
   // Konversi workbook menjadi file Excel
-  XLSX.writeFile(workbook, "example.xlsx");
+  const finalFileName = `${fileName}${dateSuffix}.xlsx`;
+  XLSX.writeFile(workbook, finalFileName);
 });
     
+
+
     
   </script>
 </body>
