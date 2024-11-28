@@ -1,76 +1,47 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bio NexdyMC</title>
-  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
-  <link rel="stylesheet" href="https://kit.fontawesome.com/4592f70558.js" crossorigin="anonymous">
-  <link rel="shortcut icon" type="x-icon" href="../icon.nexdy.png">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    @font-face {
-      font-family: 'zh-cn';
-      src: url(zh-cn.ttf) format('truetype'), url(zh-cn.ttf);
-    }
-  </style>
+  <title>Download Excel</title>
 </head>
 <body>
-  <div class="background">
-    <video muted loop autoplay id="bg-video">
-      <source src="hu-tao.mp4" type="video/mp4">
-      <source src="../hu-tao.mp4" type="video/mp4">
-    </video>
-  </div>
 
-  <main>
-    <nav>
-      <div class="tanggal" id="tanggal"></div>
-      <div class="clock" id="clock"></div>
-    </nav>
+<table>
+  <thead>
+    <tr>
+      <th>Nama</th>
+      <th>Umur</th>
+      <th>Kota</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Andi</td>
+      <td>25</td>
+      <td>Jakarta</td>
+    </tr>
+    <tr>
+      <td>Budi</td>
+      <td>30</td>
+      <td>Bandung</td>
+    </tr>
+  </tbody>
+</table>
 
-    <div class="content">
-      <div class="profil">
-        <img src="icon.png" alt="icon Nexdy" width="120px">
-        <h1>NexdyMC</h1>
-      </div>
-      <div class="description"></div>
-      <div class="link-bio">
-        <h1>Sosial</h1>
-        <div class="card-link">
-          <a href="#" id="Youtube" target="_blank">
-            <div class="name-description">
-              <h2>Youtube</h2>
-            </div>
-          </a>
-          <a href="#" id="instagram" target="_blank">
-            <div class="name-description">
-              <h2>Instagram</h2>
-            </div>
-          </a>
-          <a href="#" id="tiktok" target="_blank">
-            <div class="name-description">
-              <h2>Tiktok</h2>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
+<button onclick="exportToExcel()">Download Excel</button>
 
-    <footer>
-      <div class="icon" style="font-size: 2rem;">
-        <a href="#" id="github" style="color: #fff">
-          <i class="bx bxl-github"></i>
-        </a>
-      </div>
-      <div id="copyright"></div>
-    </footer>
-  </main>
+<script>
+function exportToExcel() {
+  // Seleksi tabel yang ingin diekspor
+  var table = document.querySelector("table");
 
-  <script src="script.js"></script>
+  // Buat elemen a untuk mendownload file
+  var a = document.createElement('a');
+  var data = new Blob([table.outerHTML], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  a.href = URL.createObjectURL(data);
+  a.download = 'data.xlsx';
+  a.click();
+}
+</script>
+
 </body>
 </html>
