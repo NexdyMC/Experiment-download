@@ -1,47 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Download Excel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Excel from Textarea</title>
 </head>
 <body>
+  <h1>Download Excel File</h1>
+  <textarea id="dataInput" rows="10" cols="50" placeholder="Enter data in CSV format, e.g.:
+Name,Age,City
+Alice,30,New York
+Bob,25,San Francisco"></textarea>
+  <br><br>
+  <button id="downloadExcel">Download Excel</button>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nama</th>
-      <th>Umur</th>
-      <th>Kota</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Andi</td>
-      <td>25</td>
-      <td>Jakarta</td>
-    </tr>
-    <tr>
-      <td>Budi</td>
-      <td>30</td>
-      <td>Bandung</td>
-    </tr>
-  </tbody>
-</table>
+  <!-- Include SheetJS library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+document.getElementById("downloadExcel").addEventListener("click", function () {
+  // Ambil data dari textarea
+  const inputData = document.getElementById("dataInput").value;
 
-<button onclick="exportToExcel()">Download Excel</button>
+  // Validasi input kosong
+  if (!inputData.trim()) {
+    alert("Please enter some data in the textarea.");
+    return;
+  }
 
-<script>
-function exportToExcel() {
-  // Seleksi tabel yang ingin diekspor
-  var table = document.querySelector("table");
+  // Ubah data CSV menjadi array 2D
+  const rows = inputData.split("\n").map(row => row.split(","));
 
-  // Buat elemen a untuk mendownload file
-  var a = document.createElement('a');
-  var data = new Blob([table.outerHTML], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  a.href = URL.createObjectURL(data);
-  a.download = 'data.xlsx';
-  a.click();
-}
-</script>
+  // Buat worksheet dari data
+  const worksheet = XLSX.utils.aoa_to_sheet(rows);
 
+  // Buat workbook dan tambahkan worksheet
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+  // Konversi workbook menjadi file Excel
+  XLSX.writeFile(workbook, "example.xlsx");
+});
+    
+    
+  </script>
 </body>
 </html>
